@@ -1,0 +1,21 @@
+---
+
+- hosts: all
+  become: true
+  tasks:
+
+  - name: Install Nagios (Ubuntu)
+    apt:
+      name:
+        - nagios4
+      state: latest
+      update_cache: yes
+    when: ansible_distribution == "Ubuntu"
+
+  - name: Install Nagios (CentOS)
+    dnf:
+      name:
+        - nagios
+      state: latest
+      update_cache: yes
+    when: ansible_distribution == "CentOS"
