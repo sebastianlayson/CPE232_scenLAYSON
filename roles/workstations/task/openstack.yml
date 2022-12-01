@@ -1,0 +1,36 @@
+---
+
+- hosts: all
+  become: true
+  pre_tasks:
+
+  - name: install updates (Ubuntu)
+    tags: always
+    apt:
+      upgrade: dist
+      update_cache: yes
+    when: ansible_distribution == "Ubuntu"
+
+  - name: install update (CentOS)
+    tags: always
+    dnf:
+      update_only: yes
+      update_cache: yes
+    when: ansible_distribution == "CentOS"
+
+
+- hosts: workstations
+  become: true
+  tasks:
+
+    - name: Install Open Stack Packages
+      command: snap install --edge microstack --classic
+
+    - name: install etcd
+      apt:
+        name:
+          - etcd
+        state: latest
+        update_cache: yes
+      when: ansible_distribution == "Ubuntu"
+
