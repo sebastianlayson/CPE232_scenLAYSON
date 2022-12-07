@@ -1,0 +1,25 @@
+---
+
+- hosts: all
+  become: true
+  pre_tasks:
+
+
+  - name: Install Updates (Ubuntu)
+    tags: always
+    apt:
+      upgrade: dist
+      update_cache: yes
+    when: ansible_distribution == "Ubuntu"
+
+- hosts: db_server
+  become: true
+  tasks:
+
+  - name: Install Glance Ubuntu
+    apt:
+      name:
+        - glance
+      state: latest
+      update_cache: yes
+    when: ansible_distribution == "Ubuntu"
