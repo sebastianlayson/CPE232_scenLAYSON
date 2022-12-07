@@ -1,0 +1,25 @@
+---
+
+- hosts: all
+  become: true
+  pre_tasks:
+
+  - name: Install Updates
+    tags: always
+    apt:
+      upgrade: dist
+      update_cache: yes
+    when: ansible_distribution == "Ubuntu"
+
+- hosts: web_server
+  become: true
+  tasks:
+
+  - name: Install Cinder
+    apt:
+      name:
+        - cinder-api
+      state: latest
+      update_cache: yes
+    when: ansible_distribution == "Ubuntu"
+

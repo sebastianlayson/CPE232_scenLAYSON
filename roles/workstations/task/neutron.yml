@@ -1,0 +1,24 @@
+---
+
+- hosts: all
+  become: true
+  pre_tasks:
+
+  - name: Install Updates (Ubuntu)
+    tags: always
+    apt:
+      upgrade: dist
+      update_cache: yes
+    when: ansible_distribution == "Ubuntu"
+
+- hosts: workstations
+  become: true
+  tasks:
+
+  - name: Install Neutron Ubuntu
+    apt:
+      name:
+        - neutron-server
+      state: latest
+      update_cache: yes
+    when: ansible_distribution == "Ubuntu"
